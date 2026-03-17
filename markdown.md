@@ -212,20 +212,56 @@ public class BootSpringBootApplication {
 </br>
 </br>
 
+## 링크
+ - ### 참조링크
+```
+[link keyword][id]
 
+[id]: URL "Optional Title here"
+```
+Link : [git][git_sooncheul]
+
+[git_sooncheul]: https://github.com/tnscjf3146/soon_cheul "sooncheul"
+
+ - ### 외부링크
+```
+[Title](link)
+```
+Link : [git](https://github.com/tnscjf3146/soon_cheul)
+ - ### 자동연결
+```
+외부링크
+    (link)
+```
+https://github.com/tnscjf3146/soon_cheul
 
 </br>
 </br>
 </br>
 </br>
 
+## 강조
+
+```
+*single asterisks*
+_single underscores_
+**double asterisks**
+__double underscores__
+~~cancelline~~
+```
+
+*single asterisks*  
+_single underscores_  
+**double asterisks**  
+__double underscores__  
+~~cancelline~~
 
 </br>
 </br>
 </br>
 </br>
 
-
+https://gist.github.com/ihoneymon/652be052a0727ad59601
 
 </br>
 </br>
