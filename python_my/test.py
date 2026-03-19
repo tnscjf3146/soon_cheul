@@ -43,10 +43,10 @@ def dfs(idx):
         answer = min(answer, max(time1, time2))
         return
 
-    selected[idx] = 0
+    selected[idx] = 1
     dfs(idx + 1)
 
-    selected[idx] = 1
+    selected[idx] = 0
     dfs(idx + 1)
 
 

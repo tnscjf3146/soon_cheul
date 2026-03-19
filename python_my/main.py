@@ -2,63 +2,69 @@ import sys
 sys.stdin = open("input.txt", "r")
 sys.stdout = open("output.txt", "w")
 
-def calc(food):
-    '''
-    맛의 synergy 를 계산하는 함수
-    :param food: 재료 리스트
-    :return: synergy
-    '''
-    synergy = 0
-    for i in range(N // 2):
-        for j in range(i + 1, N // 2):
+def simulate(times, stair_val):
+    if not times:
+        return 0
 
-            idx = food[i]
-            jdx = food[j]
+    times.sort()
+    finish = []
 
-            synergy += ingredient[idx][jdx] + ingredient[jdx][idx]
+    for i in range(len(times)):
+        if i < 3:
+            start = times[i]
+        else:
+            start = max(times[i], finish[i - 3])
 
-    return synergy
+        finish.append(start + stair_val)
 
-def dfs(idx, picked):
-    '''
-    재료를 N // 2 개 선택하고, A 요리를 만들고
-    나머지 재료로 B 요리를 구성하는 함수
-    :param idx: 인덱스로 재료 사용 고려
-    :param picked: 사용하는 재료 리스트에 저장
-    :return: result 값 직접 변환 min 함수를 사용해서 맛차이의 절댓값으로 재할당
-    '''
-    global result
+    return finish[-1]
 
-    if len(picked) == N // 2:
-        # 요리 A의 재료를 다 선택했다면,
+def dfs(idx):
+    global answer
 
-        other = []
-        # 요리 B의 재료를 선택
+    if idx == len(people):
+        stair1 = []
+        stair2 = []
 
-        for j in range(N):
-            if j not in picked:
-                other.append(j)
+        for i in range(len(people)):
+            pr, pc = people[i]
+            if selected[i] == 0:
+                sr, sc, slen = stairs[0]
+                stair1.append(abs(pr - sr) + abs(pc - sc) + 1)
 
-        a_dish = calc(picked)
-        b_dish = calc(other)
+            else:
+                sr, sc, slen = stairs[1]
+                stair2.append(abs(pr - sr) + abs(pc - sc) + 1)
 
-        result = min(result, abs(a_dish - b_dish))
+        time1 = simulate(stair1, stairs[0][2])
+        time2 = simulate(stair2, stairs[1][2])
+
+        answer = min(answer, max(time1, time2))
         return
 
-    for i in range(idx, N):
-        picked.append(i)
-        dfs(i + 1, picked)
-        picked.pop()
-        # 백트래킹
+    selected[idx] = 1
+    dfs(idx + 1)
 
-# 인풋 받기
+    selected[idx] = 0
+    dfs(idx + 1)
+
 T = int(input())
 for test_case in range(1, T + 1):
     N = int(input())
-    ingredient = [list(map(int, input().split())) for _ in range(N)]
+    arr = [list(map(int,input())) for _ in range(N)]
 
-    result = float("inf")
+    people = []
+    stairs = []
 
-    dfs(0, [])
+    for i in range(N):
+        for j in range(N):
+            if arr[i][j] != 0:
+                if arr[i][j] == 1:
+                    people.append((i, j))
+                else:
+                    stairs.append((i, j, arr[i][j]))
 
-    print(f"#{test_case}", result)
+    selected = [0] * len(people)
+    answer = float("inf")
+
+    dfs(0)
